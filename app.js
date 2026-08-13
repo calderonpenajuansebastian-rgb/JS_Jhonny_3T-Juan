@@ -1,43 +1,34 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import bodyParser from "body-parser";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
-// Middlewares
-app.use(cors());
-app.use(bodyParser.json());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// =======================================
-// Ruta principal
-// =======================================
+
 app.get("/", (req, res) => {
-    res.send("Hola ficha 3407184, estamos aprendiendo Express en el SENA");
+    res.send("Tercera rama creada por Juan Calderon");
 });
 
-// =======================================
-// Listado de productos
-// =======================================
-app.get("/productos", (req, res) => {
+
+app.get("/FUTBOLISTAS", (req, res) => {
     res.send(`
-        <h1>Listado de productos</h1>
+        <h1>Lista de Jugadores</h1>
         <ol>
-            <li>Televisor</li>
-            <li>Celular</li>
-            <li>Impresora</li>
+            <li>Cristiano Ronaldo</li>
+            <li>Messi</li>
+            <li>Neymar Jr</li>
+            <li>Kylian Mbappé</li>
+            <li>Vinícius Jr</li>
         </ol>
     `);
 });
 
-// =======================================
-// EJERCICIO 1
-// Ruta: /saludo/:nombre
-// =======================================
-app.get("/saludo/:nombre", (req, res) => {
+app.get("/dorsal/:nombre", (req, res) => {
 
     const { nombre } = req.params;
 
@@ -48,84 +39,90 @@ app.get("/saludo/:nombre", (req, res) => {
     }
 
     res.send(`Hola ${nombre}, bienvenido`);
-
 });
 
-// =======================================
-// EJERCICIO 2
-// Ruta: /productos/:nombre
+
 // =======================================
 app.get("/productos/:nombre", (req, res) => {
 
     const { nombre } = req.params;
 
     const producto = {
-        id: 1,
+        dorsal: 10,
         nombre: nombre,
-        cantidadStock: 30,
-        precioUnitario: 2500000,
-        categoria: "Tecnología"
+        categoria: "FUTBOLISTA"
     };
 
     res.json(producto);
+});
+
+
+app.get("/FUTBOLISTA/:EDAD/:DORSAL", (req, res) => {
+
+    const { EDAD, DORSAL } = req.params;
+
+    res.json([
+        {
+            edad: 37,
+            dorsal: 10,
+            futbolista: "Messi",
+            servidor: "Servidor Desarrollo rama 3"
+        },
+        {
+            edad: 41,
+            dorsal: 7,
+            futbolista: "Cristiano Ronaldo",
+            servidor: "Servidor Desarrollo rama 3"
+        },
+        {
+            edad: 32,
+            dorsal: 11,
+            futbolista: "Neymar Jr",
+            servidor: "Servidor Desarrollo rama 3"
+        }
+    ]);
 
 });
 
-// =======================================
-// EJERCICIO 3
-// Ruta: /productos/:categoria/:id
-// =======================================
-app.get("/productos/:categoria/:id", (req, res) => {
-
-    const { categoria, id } = req.params;
-
-    res.json({
-        producto: id,
-        categoria: categoria,
-        servidor: "Servidor Express ADSO"
-    });
-
-});
-
-// =======================================
-// EJERCICIO 4
-// Ruta: /usuarios/:id/posts?orden=asc
-// =======================================
-app.get("/usuarios/:id/posts", (req, res) => {
+app.get("/jugadores/:id/posts", (req, res) => {
 
     const { id } = req.params;
     const { orden } = req.query;
 
-    let publicaciones = [
+    let jugadores = [
         {
             id: 1,
-            titulo: "Mi primera publicación"
+            nombre: "Cristiano Ronaldo",
+            edad: 41,
+            dorsal: 7
         },
         {
             id: 2,
-            titulo: "Aprendiendo Express"
+            nombre: "Messi",
+            edad: 37,
+            dorsal: 10
         },
         {
             id: 3,
-            titulo: "Uso de parámetros"
+            nombre: "Neymar Jr",
+            edad: 32,
+            dorsal: 11
         }
     ];
 
     if (orden === "desc") {
-        publicaciones.reverse();
+        jugadores.reverse();
     }
 
     res.json({
         usuario: id,
         orden: orden || "asc",
-        publicaciones
+        jugadores
     });
 
 });
 
-// =======================================
-// Ruta de ejemplo
-// =======================================
+
 app.get("/aprendices/:nombre", (req, res) => {
 
     const { nombre } = req.params;
@@ -135,11 +132,8 @@ app.get("/aprendices/:nombre", (req, res) => {
         stock: 5,
         categoria: "Tecnología"
     });
-
 });
 
-// =======================================
-// Iniciar servidor
 // =======================================
 app.listen(port, () => {
     console.log(`Servidor funcionando en el puerto ${port}`);
