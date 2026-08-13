@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 const app = express();
 const port = process.env.PORT || 4000;
 
+// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
@@ -38,7 +39,6 @@ app.get("/api/aprendices", (req, res) => {
 
 });
 
-
 app.get("/api/aprendices/:nombre", (req, res) => {
 
     const { nombre } = req.params;
@@ -53,10 +53,11 @@ app.get("/api/aprendices/:nombre", (req, res) => {
             mensaje: "Aprendiz no encontrado"
         });
     }
-const datosAprendiz = listaAprendices.filter(
-    aprendiz => aprendiz.nombre === nombre
-);
-res.json(datosAprendiz);
+
+    res.json({
+        datosAprendiz: aprendiz
+    });
+
 });
 
 app.get("/productos/:categoria/:id", (req, res) => {
@@ -71,6 +72,44 @@ app.get("/productos/:categoria/:id", (req, res) => {
 
 });
 
+app.post("/api/aprendices", (req, res) => {
+
+    const { nombre, edad, Correo, imagen } = req.body;
+
+    if (!nombre || nombre.trim().length < 3) {
+
+        return res.status(400).json({
+            mensaje: "El nombre debe tener mínimo 3 letras"
+        });
+
+    }
+
+    const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!Correo || !correoValido.test(Correo)) {
+
+        return res.status(400).json({
+            mensaje: "El correo electrónico no es válido"
+        });
+
+    }
+
+    const nuevoAprendiz = {
+        nombre: nombre,
+        edad: edad,
+        Correo: Correo,
+        imagen: imagen || "url"
+    };
+
+    listaAprendices.push(nuevoAprendiz);
+
+    // Respuesta
+    res.status(201).json({
+        mensaje: "Aprendiz creado correctamente",
+        aprendiz: nuevoAprendiz
+    });
+
+});
 
 app.listen(port, () => {
 
