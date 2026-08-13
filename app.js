@@ -12,16 +12,11 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// =======================================
-// Ruta principal
-// =======================================
+
 app.get("/", (req, res) => {
     res.send("Hola ficha 3407184, estamos aprendiendo Express en el SENA");
 });
 
-// =======================================
-// Listado de productos
-// =======================================
 app.get("/productos", (req, res) => {
     res.send(`
         <h1>Listado de productos</h1>
@@ -33,10 +28,6 @@ app.get("/productos", (req, res) => {
     `);
 });
 
-// =======================================
-// EJERCICIO 1
-// Ruta: /saludo/:nombre
-// =======================================
 app.get("/saludo/:nombre", (req, res) => {
 
     const { nombre } = req.params;
@@ -51,10 +42,6 @@ app.get("/saludo/:nombre", (req, res) => {
 
 });
 
-// =======================================
-// EJERCICIO 2
-// Ruta: /productos/:nombre
-// =======================================
 app.get("/productos/:nombre", (req, res) => {
 
     const { nombre } = req.params;
@@ -71,10 +58,6 @@ app.get("/productos/:nombre", (req, res) => {
 
 });
 
-// =======================================
-// EJERCICIO 3
-// Ruta: /productos/:categoria/:id
-// =======================================
 app.get("/productos/:categoria/:id", (req, res) => {
 
     const { categoria, id } = req.params;
@@ -87,10 +70,6 @@ app.get("/productos/:categoria/:id", (req, res) => {
 
 });
 
-// =======================================
-// EJERCICIO 4
-// Ruta: /usuarios/:id/posts?orden=asc
-// =======================================
 app.get("/usuarios/:id/posts", (req, res) => {
 
     const { id } = req.params;
@@ -123,9 +102,6 @@ app.get("/usuarios/:id/posts", (req, res) => {
 
 });
 
-// =======================================
-// Ruta de ejemplo
-// =======================================
 app.get("/aprendices/:nombre", (req, res) => {
 
     const { nombre } = req.params;
@@ -138,9 +114,6 @@ app.get("/aprendices/:nombre", (req, res) => {
 
 });
 
-// =======================================
-// Iniciar servidor
-// =======================================
 app.listen(port, () => {
     console.log(`Servidor funcionando en el puerto ${port}`);
 });
